@@ -3,26 +3,21 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/crank"
-import 'lib/AnimatedSprite'
+import "lib/AnimatedSprite"
+import "player"
 
-local gfx = playdate.graphics
+local pd <const> = playdate
+local gfx <const> = pd.graphics
 
 local player = nil
+local playerSpeed = 1
 
 local function initialize()
-	local playerTable = gfx.imagetable.new("images/player")
-	player = AnimatedSprite.new(playerTable)
-	player:addState("back", 1, 2, {tickStep = 4}, true)
-	--player:setImage(playerTable:getImage(0))
-	--player:changeState("back")
-	player:moveTo(200, 120)
-	player:addSprite()
-	player:setCollideRect(20, 0, player.width, player.height)
+	player = Player(200, 120)
 end
 
 initialize()
 
-function playdate.update()
+function pd.update()
 	gfx.sprite.update()
-	player:updateAnimation()
 end
