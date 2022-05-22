@@ -72,18 +72,18 @@ function Player:onCrank()
 		if crankPosition<225 then
 			if crankPosition<135 then
 				if crankPosition<45 then
-					self.direction = "back"
+					self.direction = "front"
 				else
-					self.direction = "left"
+					self.direction = "right"
 				end
 			else
-				self.direction = "front"
+				self.direction = "back"
 			end
 		else
-			self.direction = "right"
+			self.direction = "left"
 		end
 	else
-		self.direction = "back"
+		self.direction = "front"
 	end
 
 	self:changeState(self.direction)
