@@ -21,3 +21,7 @@ initialize()
 function pd.update()
 	gfx.sprite.update()
 end
+
+function pd.cranked()
+	player:onCrank()
+end
