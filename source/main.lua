@@ -5,15 +5,18 @@ import "CoreLibs/timer"
 import "CoreLibs/crank"
 import "lib/AnimatedSprite"
 import "player"
+import "mosher"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
 local player = nil
-local playerSpeed = 1
+
+local mosher = nil
 
 local function initialize()
 	player = Player(200, 120)
+	mosher = Mosher(220, 130)
 end
 
 initialize()
