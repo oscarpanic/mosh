@@ -45,6 +45,7 @@ function Player:init(x, y)
 	self:add()
 	self:setCollideRect(0, 0, self.width, self.height)
     self.moveSpeed = 1
+	self.pushStrength = 3
 	self:onCrank()
 end
 
@@ -87,4 +88,32 @@ function Player:onCrank()
 	end
 
 	self:changeState(self.direction)
+end
+
+function Player:collisionResponse(other)
+	if pd.buttonJustPressed(pd.kButtonA) then
+		if other:isa(Mosher) then
+			if self.direction == "front" then
+				if other.y <= self.y then
+					other:push(0, -self.pushStrength)
+				end
+			end
+			if self.direction == "back" then
+				if other.y >= self.y then
+					other:push(0, self.pushStrength)
+				end
+			end
+			if self.direction == "right" then
+				if other.x >= self.x then
+					other:push(self.pushStrength, 0)
+				end
+			end
+			if self.direction == "left" then
+				if other.x <= self.x then
+					other:push(-self.pushStrength, 0)
+				end
+			end
+		end
+	end
+	return "bounce"
 end

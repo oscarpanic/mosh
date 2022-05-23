@@ -32,7 +32,7 @@ end
 
 function Mosher:update()
     self:moveWithCollisions(
-        self.x + self.moveDirX  *self.moveSpeed, 
+        self.x + self.moveDirX  * self.moveSpeed, 
         self.y + self.moveDirY * self.moveSpeed
     )
 
@@ -48,5 +48,14 @@ end
 function Mosher:collisionResponse(other)
     self:movementReset()
     return "bounce"
+end
+
+function Mosher:push(pushX, pushY)
+    if(pushX ~= 0) then
+        self.moveDirX = pushX
+    end
+    if(pushY ~= 0) then
+        self.moveDirY = pushY
+    end
 end
 
