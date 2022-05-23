@@ -37,5 +37,16 @@ function Mosher:update()
     )
 
     self:updateAnimation()
+
+    if self.moveDirX == 0 then
+        if self.moveDirY == 0 then
+            self:movementReset()
+        end
+    end
+end
+
+function Mosher:collisionResponse(other)
+    self:movementReset()
+    return "bounce"
 end
 
