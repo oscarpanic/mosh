@@ -31,3 +31,11 @@ end
 function pd.cranked()
 	player:onCrank()
 end
+
+function pd.AButtonDown()
+	player.isTryingPush = true
+end
+
+function pd.AButtonUp()
+	player.isTryingPush = false
+end

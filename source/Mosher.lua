@@ -21,6 +21,7 @@ function Mosher:init(x, y)
     self:add()
     self:setCollideRect(0, 0, self.width, self.height)
     self.moveSpeed = 1
+    self.pushStrength = 2
     self:movementReset()
     self:changeState("default")
 end
@@ -50,7 +51,7 @@ function Mosher:collisionResponse(other)
     return "bounce"
 end
 
-function Mosher:push(pushX, pushY)
+function Mosher:onPushed(pushX, pushY)
     if(pushX ~= 0) then
         self.moveDirX = pushX
     end
@@ -59,3 +60,30 @@ function Mosher:push(pushX, pushY)
     end
 end
 
+function Mosher:onPushPlayer(other)
+    if(other:isa(Player)) then
+        local deltaX = other.x - self.x
+        local deltaY = other.y - self.y
+        other:onPushed(deltaX, deltaY)
+
+
+        -- local pushX = 0
+        -- local pushY = 0
+        -- if other.y <= self.y then
+        --     pushY -= self.pushStrength
+        -- end
+        -- if other.y >= self.y then
+        --     pushY += self.pushStrength
+        -- end
+        -- if other.x >= self.x then
+        --     pushX += self.pushStrength
+        -- end
+        -- if other.x <= self.x then
+        --     pushX -= self.pushStrength
+        -- end
+
+        -- other:onPushed(pushX, pushY)
+    end
+    
+    self:movementReset()
+end
