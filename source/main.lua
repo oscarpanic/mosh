@@ -6,6 +6,7 @@ import "CoreLibs/crank"
 import "lib/AnimatedSprite"
 
 import "player"
+import "bigMosher"
 import "mosher"
 import "crowdTile"
 import "mapHandler"
@@ -15,10 +16,12 @@ local gfx <const> = pd.graphics
 
 local player = nil
 local mosher = nil
+local bigMosher = nil
 
 local function initialize()
 	player = Player(200, 160)
 	mosher = Mosher(220, 180)
+	bigMosher = BigMosher(200, 180)
 	mapInit()
 end
 
@@ -34,6 +37,7 @@ end
 
 function pd.AButtonDown()
 	player.isTryingPush = true
+	--TODO: Set a timer for push to expire so push is not happen whole press duration
 end
 
 function pd.AButtonUp()
