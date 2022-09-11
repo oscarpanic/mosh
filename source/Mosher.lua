@@ -16,6 +16,14 @@ function Mosher:init(x, y, mosherTable, mosherStates)
                 tickStep = 8,
                 xScale = 2,
                 yScale = 2
+            },
+            {
+                name = "fallen",
+                firstFrameIndex = 3,
+                framesCount = 3,
+                tickStep = 8,
+                xScale = 2,
+                yScale = 2
             }
         }
     end
@@ -29,6 +37,7 @@ function Mosher:init(x, y, mosherTable, mosherStates)
     self.moveSpeed = 1
     self.pushStrength = 1
     self.pushResistance = 0
+    self.fallen = false
     self:movementReset()
     self:changeState("default")
 end
@@ -48,7 +57,9 @@ function Mosher:update()
 
     if self.moveDirX == 0 then
         if self.moveDirY == 0 then
-            self:movementReset()
+            if self.fallen == false then
+                self:movementReset()
+            end
         end
     end
 end
@@ -79,4 +90,11 @@ function Mosher:onPushPlayer(other)
     end
     
     self:movementReset()
+end
+
+function Mosher:onFall()
+    self:changeState("fallen")
+    self.fallen = true
+    self.moveDirX = 0
+    self.moveDirY = 0
 end

@@ -24,3 +24,13 @@ function BigMosher:init(x, y)
     self.pushStrength = 3
     self.pushResistance = 1
 end
+
+function BigMosher:collisionResponse(other)
+    self:movementReset()
+    if other:isa(Mosher) then
+        other:onFall()
+        return "freeze"
+    else
+        return "bounce"
+    end
+end
