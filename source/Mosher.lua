@@ -65,20 +65,31 @@ function Mosher:update()
 end
 
 function Mosher:collisionResponse(other)
-    self:movementReset()
-    return "bounce"
+    if self.fallen then
+        return "freeze"
+    else
+        self:movementReset()
+        return "bounce"
+    end
 end
 
 function Mosher:onPushed(pushX, pushY)
-    if pushX >= 0 then
-        self.moveDirX = pushX - self.pushResistance
-    elseif pushX < 0 then
-        self.moveDirX = pushX + self.pushResistance
-    end
-    if pushY >= 0 then
-        self.moveDirY = pushY - self.pushResistance
-    elseif pushY <= 0 then
-        self.moveDirY = pushY + self.pushResistance
+    if self.fallen == true then
+        score -= 10
+        self.moveDirX = 0
+        self.moveDirY = 0
+    else
+        score += 5
+        if pushX >= 0 then
+            self.moveDirX = pushX - self.pushResistance
+        elseif pushX < 0 then
+            self.moveDirX = pushX + self.pushResistance
+        end
+        if pushY >= 0 then
+            self.moveDirY = pushY - self.pushResistance
+        elseif pushY <= 0 then
+            self.moveDirY = pushY + self.pushResistance
+        end
     end
 end
 
@@ -97,4 +108,13 @@ function Mosher:onFall()
     self.fallen = true
     self.moveDirX = 0
     self.moveDirY = 0
+end
+
+function Mosher:onLifted()
+    if self.fallen then
+        score += 5
+        self:changeState("default")
+        self.fallen = false
+        self:movementReset()
+    end
 end

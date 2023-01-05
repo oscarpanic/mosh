@@ -48,6 +48,7 @@ function Player:init(x, y)
 	self.pushStrength = 3
 	self.pushedX = 0
 	self.pushedY = 0
+	self.isInteracting = false
 	self.isPushed = false
 	self.isTryingPush = false
 	self:onCrank()
@@ -126,36 +127,69 @@ function Player:onCrank()
 end
 
 function Player:collisionResponse(other)
-	
-	if self.isTryingPush then
+	if self.isTryingPush == false and self.isInteracting == false then
+		-- Collision when Player is not pressing A nor B buttons
 		if other:isa(Mosher) then
-			if self.direction == "front" then
-				if other.y <= self.y then
-					other:onPushed(0, -self.pushStrength)
-				end
+			if other.fallen then
+				return "freeze"
 			end
-			if self.direction == "back" then
-				if other.y >= self.y then
-					other:onPushed(0, self.pushStrength)
-				end
-			end
-			if self.direction == "right" then
-				if other.x >= self.x then
-					other:onPushed(self.pushStrength, 0)
-				end
-			end
-			if self.direction == "left" then
-				if other.x <= self.x then
-					other:onPushed(-self.pushStrength, 0)
-				end
-			end
-		end
-		self.isTryingPush = false
-	else
-		if other:isa(Mosher) then
 			other:onPushPlayer(self)
 		end
+
+	elseif other:isa(Mosher)  then
+		-- Collision with a Mosher while A or B button is pressed
+		if self.direction == "front" then
+			if other.y <= self.y then
+				if self.isTryingPush then
+					other:onPushed(0, -self.pushStrength)
+				elseif self.isInteracting then
+					other:onLifted()
+					self.isInteracting = false
+					return "freeze"
+				end
+				
+			end
+		end
+		if self.direction == "back" then
+			if other.y >= self.y then
+				if self.isTryingPush then
+					other:onPushed(0, self.pushStrength)
+				elseif self.isInteracting then
+					other:onLifted()
+					self.isInteracting = false
+					return "freeze"
+				end
+			end
+		end
+		if self.direction == "right" then
+			if other.x >= self.x then
+				if self.isTryingPush then
+					other:onPushed(self.pushStrength, 0)
+				elseif self.isInteracting then
+					other:onLifted()
+					self.isInteracting = false
+					return "freeze"
+				end
+			end
+		end
+		if self.direction == "left" then
+			if other.x <= self.x then
+				if self.isTryingPush then
+					other:onPushed(-self.pushStrength, 0)
+				elseif self.isInteracting then
+					other:onLifted()
+					self.isInteracting = false
+					return "freeze"
+				end
+			end
+		end
+
+		self.isTryingPush = false
+		if other.fallen then
+			return "freeze"
+		end
 	end
+	
 	return "bounce"
 end
 

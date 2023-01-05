@@ -17,6 +17,9 @@ local gfx <const> = pd.graphics
 local player = nil
 local mosher = nil
 local bigMosher = nil
+moshTilemap = nil
+
+score = 0
 
 local function initialize()
 	player = Player(200, 160)
@@ -29,6 +32,8 @@ initialize()
 
 function pd.update()
 	gfx.sprite.update()
+	moshTilemap:draw(0,0)
+	gfx.drawText("Fun: " .. score, 320, 5)
 end
 
 function pd.cranked()
@@ -37,9 +42,18 @@ end
 
 function pd.AButtonDown()
 	player.isTryingPush = true
-	--TODO: Set a timer for push to expire so push is not happen whole press duration
+	--TODO: Set a timer for push to expire so push is not happening whole press duration
 end
 
 function pd.AButtonUp()
 	player.isTryingPush = false
+end
+
+function pd.BButtonDown()
+	player.isInteracting = true
+	--TODO: Set a timer for push to expire so push is not happening whole press duration
+end
+
+function pd.BButtonUp()
+	player.isInteracting = false
 end
